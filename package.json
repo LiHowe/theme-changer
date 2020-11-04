@@ -2,7 +2,7 @@
   "name": "h-theme-changer",
   "version": "0.0.2",
   "description": "Simply way to theme change",
-  "main": "dist/theme.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c"
   },

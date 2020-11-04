@@ -7,7 +7,7 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      file: 'dist/theme.js',
+      file: 'dist/index.js',
       format: 'cjs',
     },
     // {
