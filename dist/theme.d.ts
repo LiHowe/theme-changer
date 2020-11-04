@@ -4,7 +4,7 @@
  */
 declare type RenderNode = 'body' | 'head';
 declare type ThemeOptions = {
-    type: ThemeType;
+    mode: ThemeMode;
     colorDefine?: {
         [key: string]: {
             [key: string]: string;
@@ -26,7 +26,7 @@ declare global {
         disabled: boolean;
     }
 }
-declare enum ThemeType {
+declare enum ThemeMode {
     ROOT_CSS = 0,
     STRING_TEMPLATE = 1,
     LINK_TAG = 2
@@ -46,7 +46,7 @@ declare class Theme {
     private themeName;
     private formattedThemeName;
     private constructor();
-    type: typeof ThemeType;
+    mode: typeof ThemeMode;
     cacheType: typeof ThemeCacheType;
     static getInstance: (opt?: ThemeOptions | undefined) => Theme;
     /**
