@@ -48,10 +48,10 @@ class Theme {
   private static theme: Theme
   private styleSheetCache: Map<string, Element> = new Map()
   private readonly defaultOption: ThemeOptions = {
-    mode: ThemeMode.ROOT_CSS,
+    mode: Theme.Mode.ROOT_CSS,
     colorDefine: this.defaultColor,
     cache: true,
-    cacheType: ThemeCacheType.DOM,
+    cacheType: Theme.CacheType.DOM,
     mountTarget: 'head',
     idPrefix: '--theme-'
   }
@@ -63,15 +63,15 @@ class Theme {
   private constructor(options?: ThemeOptions) {
     if (this.__dev__) {
       if (!options) return
-      if (options.mode === ThemeMode.ROOT_CSS) {
+      if (options.mode === Theme.Mode.ROOT_CSS) {
         console.warn('IE browser not support this type, please use \'stringTemplate\' to instead of it')
       }
     }
     this.options = Object.assign(this.defaultOption, options)
   }
 
-  mode = ThemeMode
-  cacheType = ThemeCacheType
+  static Mode = ThemeMode
+  static CacheType = ThemeCacheType
 
   static getInstance = (opt?: ThemeOptions):Theme => {
     if (!Theme.theme) {
@@ -203,14 +203,14 @@ class Theme {
       if (!themeElement) return
     }
     switch (this.options.cacheType) {
-      case this.cacheType.DOM:
+      case Theme.CacheType.DOM:
         themeElement.disabled = true
         themeElement.setAttribute('is-cache', '')
         break
-      case this.cacheType.HEAP:
+      case Theme.CacheType.HEAP:
         !this.styleSheetCache.has(formattedThemeName) && this.styleSheetCache.set(formattedThemeName, themeElement)
         break
-      case this.cacheType.LOCAL_STORAGE:
+      case Theme.CacheType.LOCAL_STORAGE:
         if (!window.localStorage) {
           throw new Error('Your browser not support localStorage, please choose another cache type.')
         }
@@ -228,11 +228,11 @@ class Theme {
    */
   private getCachedStyleElement = (themeName: string): Element | null => {
     switch (this.options.cacheType) {
-      case this.cacheType.DOM:
+      case Theme.CacheType.DOM:
         return document.querySelector(`#${this.getFormattedThemeName(themeName)}`)
-      case this.cacheType.HEAP:
+      case Theme.CacheType.HEAP:
         return this.styleSheetCache.get(this.getFormattedThemeName(themeName)) || null
-      case this.cacheType.LOCAL_STORAGE:
+      case Theme.CacheType.LOCAL_STORAGE:
         const cachedObjStr = window.localStorage.getItem(this.getFormattedThemeName(themeName))
         if (!cachedObjStr) return null
         const cachedObj = JSON.parse(cachedObjStr)
@@ -250,16 +250,16 @@ class Theme {
    */
   private clearCache = (): void => {
     switch (this.options.cacheType) {
-      case this.cacheType.DOM:
+      case Theme.CacheType.DOM:
         const ElementList = document.querySelectorAll('style[cache]')
         ElementList.forEach(el => {
           this.deleteStyleElement('', el)
         })
         break
-      case this.cacheType.HEAP:
+      case Theme.CacheType.HEAP:
         this.styleSheetCache.clear()
         break
-      case this.cacheType.LOCAL_STORAGE:
+      case Theme.CacheType.LOCAL_STORAGE:
         Object.keys(window.localStorage).forEach(key => {
           if (key.startsWith(this.options.idPrefix!)) {
             window.localStorage.removeItem(key)
@@ -343,13 +343,13 @@ class Theme {
     }
     this.themeName = themeName
     switch (this.options.mode) {
-      case ThemeMode.ROOT_CSS:
+      case Theme.Mode.ROOT_CSS:
         this.generateRootVariable(themeName)
         break
-      case ThemeMode.STRING_TEMPLATE:
+      case Theme.Mode.STRING_TEMPLATE:
         this.activeStyleSheet(this.generateStyleElement(themeName))
         break
-      case ThemeMode.LINK_TAG:
+      case Theme.Mode.LINK_TAG:
         this.generateLinkTag()
         break
     }

@@ -1,6 +1,6 @@
 {
-  "name": "theme-changer",
-  "version": "0.0.1",
+  "name": "h-theme-changer",
+  "version": "0.0.2",
   "description": "Simply way to theme change",
   "main": "dist/theme.js",
   "scripts": {

@@ -1,14 +1,14 @@
-# Theme-changer
+# H-Theme-Changer
 
 A simply way to change theme
 
 ## Install
 
-`npm i theme-changer --save`
+`npm i h-theme-changer --save`
 
 ```javascript
 
-import Theme from 'theme-changer'
+import Theme from 'h-theme-changer'
 
 Theme.setOption({
   // theme-changer option
